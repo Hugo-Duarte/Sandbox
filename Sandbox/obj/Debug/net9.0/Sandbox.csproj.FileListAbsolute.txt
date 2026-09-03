@@ -34,3 +34,4 @@ G:\code\Sandbox\Sandbox\obj\Debug\net9.0\refint\Sandbox.dll
 G:\code\Sandbox\Sandbox\obj\Debug\net9.0\Sandbox.pdb
 G:\code\Sandbox\Sandbox\obj\Debug\net9.0\Sandbox.genruntimeconfig.cache
 G:\code\Sandbox\Sandbox\obj\Debug\net9.0\ref\Sandbox.dll
+G:\code\Sandbox\Sandbox\obj\Debug\net9.0\Sandbox.sourcelink.json
