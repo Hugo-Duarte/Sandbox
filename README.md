@@ -1,4 +1,4 @@
-Open the inner Sandbox project folder in VS Code before building or debugging.K
+Open the inner Sandbox project folder in VS Code before building or debugging.
 
 Build and run it from VS Code
 - Menu Run >> Start Debugging or F5
