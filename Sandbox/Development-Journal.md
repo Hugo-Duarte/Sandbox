@@ -1,51 +1,63 @@
-Stage 2 — Controlled defect
+# Development Journal
 
-Date - 05-09-2026
-Time spent - 15m
+## Session 2 — MonoGame Lifecycle and Controlled Defect
 
-Observed lifecycle order 
-    1. Game1() Constructor
-    2. Initialize()
-    3. LoadContent()
-    4. Update()
-    5. Draw()
-    6. Update()
-    7. Draw()
-    and so on until exit.
+**Date:** pda  
+**Time spent:** 30 minutes
 
-Methods executed once:
-    1. Game1() Constructor
-    2. Initialize()
-    3. LoadContent()
+### Lifecycle observations
 
-Methods executed repeatedly
-    1. Update()
-    2. Draw()
+The observed execution order was:
 
-Meaning of ElapsedGameTime - Duration of the current loop step
+1. The `Game1` constructor
+2. `Initialize`
+3. `LoadContent`
+4. `Update`
+5. `Draw`
 
-Meaning of TotalGameTime - Total time since game started
+The constructor, `Initialize`, and `LoadContent` executed only once.
 
-What the Update and Draw call stacks showed - That they repeat
+`Update` and `Draw` executed repeatedly as part of MonoGame's underlying game loop.
 
-Your controlled-defect prediction:
-- Will compilation succeed? No
-- If it runs, approximately when will it fail? At Initialize
-- What service do you think will be unavailable? Graphics drawing to the screen
+### Game-time observations
 
-Actual exception type and message:
-Type -  System.InvalidOperationException
-Message - 'No Graphics Device Service'
+`ElapsedGameTime` represents the amount of simulated time associated with the current loop step. It returns to a small frame-sized duration on each iteration rather than accumulating.
 
+`TotalGameTime` represents the accumulated simulated time since the game started and continues increasing during the run.
 
-Where the exception became visible
-At G:\code\Sandbox\Sandbox\Program.cs:line 2
+### Call-stack observations
 
-Actual root cause
-- Could not use the service graphics device since it had not been initialisedd
+The Update and Draw call stacks appeared similar. Both methods were invoked through MonoGame's underlying framework loop rather than through separate loops created by the game.
 
-Confirmation that you restored the graphics manager and the game runs again
-- yes
+### Controlled-defect investigation
 
-Anything that remains uncertain
-- No
+#### Prediction
+
+- **Would compilation succeed?** I predicted that it would not.
+- **When would it fail?** I predicted that it would fail during initialisation.
+- **What would be unavailable?** I expected graphics drawing to be unavailable.
+
+#### Actual result
+
+Compilation succeeded, but the application failed at runtime during the startup process.
+
+- **Exception type:** `System.InvalidOperationException`
+- **Exception message:** `No Graphics Device Service`
+- **Relevant framework method:** `Microsoft.Xna.Framework.Game.get_GraphicsDevice()`
+- **Visible location:** `Program.cs`, line 2
+
+#### Root cause
+
+The `GraphicsDeviceManager` had deliberately not been created. Therefore, MonoGame did not have a registered graphics-device service when it attempted to access `GraphicsDevice`.
+
+The exception became visible at line 2 of `Program.cs` because it propagated back through the operation that started and ran the game. That line was not the original cause of the invalid state.
+
+This demonstrated that compilation can succeed even when a service required at runtime has not been configured.
+
+### Restoration
+
+The graphics-manager creation was restored. The application was tested again and launched normally with F5.
+
+### Remaining uncertainties
+
+None at present.
