@@ -2,7 +2,7 @@
 
 ## Session 2 — MonoGame Lifecycle and Controlled Defect
 
-**Date:** pda  
+**Date:** 2026-09-05  
 **Time spent:** 30 minutes
 
 ### Lifecycle observations
