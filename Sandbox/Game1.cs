@@ -9,6 +9,8 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
+    Texture2D healthPotionTexture;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -29,6 +31,8 @@ public class Game1 : Game
 
         // TODO: use this.Content to load your game content here
 
+        healthPotionTexture = Content.Load<Texture2D>("Sprites/health-potion"); 
+
         
     }
 
@@ -47,6 +51,18 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         // TODO: Add your drawing code here
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+        _spriteBatch.Draw(
+            healthPotionTexture,
+            new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2),
+            null,
+            Color.White,
+            0.0f,
+            new Vector2(healthPotionTexture.Width / 2, healthPotionTexture.Height / 2),
+            6.0f,
+            SpriteEffects.None,
+            0.0f);
+        _spriteBatch.End();
 
         base.Draw(gameTime);
     }
